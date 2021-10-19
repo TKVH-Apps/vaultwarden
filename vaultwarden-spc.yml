@@ -1,0 +1,80 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vaultwarden
+spec:
+  provider: vault
+  secretObjects:
+  - secretName: vaultwarden
+    type: Opaque
+    data: 
+    - objectName: SMTP_FROM
+      key: SMTP_FROM
+    - objectName: SMTP_HOST
+      key: SMTP_HOST
+    - objectName: SMTP_PASSWORD
+      key: SMTP_PASSWORD
+    - objectName: SMTP_PORT
+      key: SMTP_PORT
+    - objectName: SMTP_USERNAME
+      key: SMTP_USERNAME
+
+    - objectName: ADMIN_TOKEN
+      key: ADMIN_TOKEN
+    - objectName: APP_LDAP_BIND_DN
+      key: APP_LDAP_BIND_DN
+    - objectName: APP_LDAP_HOST
+      key: APP_LDAP_HOST
+    - objectName: DOMAIN
+      key: DOMAIN
+    - objectName: APP_LDAP_BIND_PASSWORD
+      key: APP_LDAP_BIND_PASSWORD
+    - objectName: APP_LDAP_SEARCH_BASE_DN
+      key: APP_LDAP_SEARCH_BASE_DN
+    - objectName: APP_LDAP_SEARCH_FILTER
+      key: APP_LDAP_SEARCH_FILTER
+
+
+
+  parameters:
+    vaultAddress: 'http://vault.vault:8200'
+    vaultKubernetesMountPath: 'k8s-vault-csi'
+    roleName: vaultwarden
+    objects: |
+      - objectName: "SMTP_FROM"
+        secretPath: "apps-kv/data/vaultwarden/smtp"
+        secretKey: "SMTP_FROM"
+      - objectName: "SMTP_HOST"
+        secretPath: "apps-kv/data/vaultwarden/smtp"
+        secretKey: "SMTP_HOST"
+      - objectName: "SMTP_PASSWORD"
+        secretPath: "apps-kv/data/vaultwarden/smtp"
+        secretKey: "SMTP_PASSWORD"
+      - objectName: "SMTP_PORT"
+        secretPath: "apps-kv/data/vaultwarden/smtp"
+        secretKey: "SMTP_PORT"
+      - objectName: "SMTP_USERNAME"
+        secretPath: "apps-kv/data/vaultwarden/smtp"
+        secretKey: "SMTP_USERNAME"
+
+      - objectName: "ADMIN_TOKEN"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "ADMIN_TOKEN"
+      - objectName: "APP_LDAP_BIND_DN"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "APP_LDAP_BIND_DN"
+      - objectName: "APP_LDAP_HOST"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "APP_LDAP_HOST"
+      - objectName: "DOMAIN"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "DOMAIN"
+      - objectName: "APP_LDAP_BIND_PASSWORD"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "APP_LDAP_BIND_PASSWORD"
+      - objectName: "APP_LDAP_SEARCH_BASE_DN"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "APP_LDAP_SEARCH_BASE_DN"
+      - objectName: "APP_LDAP_SEARCH_FILTER"
+        secretPath: "apps-kv/data/vaultwarden/config"
+        secretKey: "APP_LDAP_SEARCH_FILTER"

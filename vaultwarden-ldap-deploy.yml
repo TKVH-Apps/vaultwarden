@@ -1,0 +1,77 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: vaultwarden-ldap
+  labels:
+    app: vaultwarden-ldap
+    part-of: vaultwarden
+  annotations:
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@hourly"
+    keel.sh/match-tag: true
+    keel.sh/approvals: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaultwarden-ldap
+      part-of: vaultwarden
+  template:
+    metadata:
+      labels:
+        app: vaultwarden-ldap
+        part-of: vaultwarden
+    spec:
+      serviceAccountName: vaultwarden
+      containers:
+      - name: vaultwarden-ldap
+        image: vividboarder/vaultwarden_ldap:latest
+        env:
+        - name: APP_VAULTWARDEN_URL
+          value: "http://vaultwarden"
+        - name: APP_VAULTWARDEN_ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: ADMIN_TOKEN
+        - name: APP_LDAP_HOST
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: APP_LDAP_HOST
+        - name: APP_LDAP_BIND_DN
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: APP_LDAP_BIND_DN
+        - name: APP_LDAP_BIND_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: APP_LDAP_BIND_PASSWORD
+        - name: APP_LDAP_SEARCH_BASE_DN
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: APP_LDAP_SEARCH_BASE_DN
+        - name: APP_LDAP_SEARCH_FILTER
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden
+              key: APP_LDAP_SEARCH_FILTER
+        - name: APP_LDAP_MAIL_FIELD
+          value: "mail"
+        - name: APP_LDAP_SYNC_INTERVAL_SECONDS
+          value: "21600"
+        volumeMounts:
+        - name: vaultwarden-secrets
+          mountPath: "/mnt/vault"
+          readOnly: true
+      volumes:
+      - name: vaultwarden-secrets
+        csi:
+          driver: "secrets-store.csi.k8s.io"
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "vaultwarden"
