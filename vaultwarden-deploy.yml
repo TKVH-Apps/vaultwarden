@@ -70,6 +70,16 @@ spec:
           value: "false"
         - name: SHOW_PASSWORD_HINT
           value: "false"
+        readinessProbe:
+          tcpSocket:
+            port: vaultwarden
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: vaultwarden
+          initialDelaySeconds: 15
+          periodSeconds: 20
         volumeMounts:
         - name: vaultwarden
           mountPath: /data
