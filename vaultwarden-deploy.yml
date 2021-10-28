@@ -80,6 +80,11 @@ spec:
             port: vaultwarden
           initialDelaySeconds: 15
           periodSeconds: 20
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 128Mi
         volumeMounts:
         - name: vaultwarden
           mountPath: /data
