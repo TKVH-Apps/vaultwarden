@@ -82,9 +82,9 @@ spec:
           periodSeconds: 20
         resources:
           limits:
-            memory: 256Mi
+            memory: 64Mi
           requests:
-            memory: 128Mi
+            memory: 32Mi
         volumeMounts:
         - name: vaultwarden
           mountPath: /data
