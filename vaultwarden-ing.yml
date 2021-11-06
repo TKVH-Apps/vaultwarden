@@ -5,15 +5,20 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    #nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/secure-backends: "true"
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/server-snippet: |
+         location ~* /admin {
+             deny all;
+             return 403;
+           }
 spec:
   rules:
   - host: <path:apps-kv/data/vaultwarden/config#HOST>
     http:
       paths:
-      - path: /^(?!.*admin).*/
+      - path: /
         pathType: Prefix
         backend:
           service:
