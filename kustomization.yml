@@ -9,3 +9,4 @@ resources:
   - vaultwarden-spc.yml
   - vaultwarden-ing.yml
   - vaultwarden-ldap-deploy.yml
+  - vaultwarden-ns.yml
