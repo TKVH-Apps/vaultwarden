@@ -15,7 +15,7 @@ metadata:
            }
 spec:
   rules:
-  - host: <path:apps-kv/data/vaultwarden/config#HOST>
+  - host: vaultwarden.<path:apps-kv/data/general#DN>
     http:
       paths:
       - path: /
@@ -27,4 +27,4 @@ spec:
               number: 80
   tls:
   - hosts:
-    - <path:apps-kv/data/vaultwarden/config#HOST>
+    - vaultwarden.<path:apps-kv/data/general#DN>
