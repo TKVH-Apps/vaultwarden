@@ -18,6 +18,16 @@ spec:
         part-of: vaultwarden
     spec:
       serviceAccountName: vaultwarden
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: disktype
+                operator: In
+                values:
+                - ssd
       containers:
       - name: vaultwarden-ldap
         image: vividboarder/vaultwarden_ldap:0.6
